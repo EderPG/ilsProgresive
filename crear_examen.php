@@ -3,6 +3,12 @@ require_once('../../config.php');
 require_login();
 
 $courseid = required_param('courseid', PARAM_INT);
+
+// Obtener cmid del módulo learningstylesurvey
+$cm = get_fast_modinfo($courseid)->get_instances_of('learningstylesurvey');
+$firstcm = reset($cm);
+$cmid = $firstcm->id;
+
 $PAGE->set_url(new moodle_url('/mod/learningstylesurvey/crear_examen.php', array('courseid' => $courseid)));
 $PAGE->set_context(context_course::instance($courseid));
 $PAGE->set_title('Crear Recurso de Evaluación');
@@ -46,7 +52,7 @@ echo $OUTPUT->heading('Formulario para Crear Evaluación');
 
     <br>
     <button type="submit">Guardar Evaluación</button>
-    <a href="crear_ruta_actividad.php?courseid=<?php echo $courseid; ?>" class="btn btn-secondary">Regresar al menú</a>
+    <a href="view.php?id=<?php echo $cmid; ?>" class="btn btn-secondary">Regresar al menú</a>
     <button type="button" onclick="agregarPregunta()">Agregar otra pregunta</button>
 </form>
 
