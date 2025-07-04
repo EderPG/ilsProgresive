@@ -1,30 +1,24 @@
+
 <?php
-require_once(__DIR__.'/../../config.php');
-require_once($CFG->dirroot.'/blocks/ILSprogresive/locallib.php');
+require_once('../../config.php');
+require_login();
 
-defined('MOODLE_INTERNAL') || die();
+global $OUTPUT, $PAGE;
 
-$id = required_param('id', PARAM_INT);
-$course = get_course($id);
-require_login($course);
-
-$url = new moodle_url('/blocks/ILSprogresive/index.php', ['id' => $course->id]);
-
-$PAGE->set_url($url);
-$PAGE->set_title(get_string('title', 'block_ILSprogresive'));
-$PAGE->set_pagelayout('standard');
-$PAGE->set_heading($course->fullname);
+$courseid = required_param('courseid', PARAM_INT);
+$PAGE->set_url('/mod/learningstylesurvey/index.php', array('courseid' => $courseid));
+$PAGE->set_title('Ruta de Aprendizaje');
+$PAGE->set_heading('Ruta de Aprendizaje');
 
 echo $OUTPUT->header();
+echo html_writer::tag('h2', 'Ruta de Aprendizaje');
 
-// Botón para realizar la encuesta
-echo html_writer::link(new moodle_url('/blocks/ILSprogresive/questionnaire.php', ['id' => $course->id]), 
-    get_string('launchsurvey', 'block_ILSprogresive'), 
-    ['class' => 'btn btn-primary']);
+echo "<ul>";
+echo "<li><a href='crear_ruta_informativa.php?courseid={$courseid}'>Crear Ruta de Aprendizaje</a></li>";
+echo "<li><a href='ordenar_ruta.php?courseid={$courseid}'>Editar Ruta de Aprendizaje</a></li>";
+echo "<li><a href='eliminar_ruta.php?courseid={$courseid}'>Eliminar Ruta de Aprendizaje</a></li>";
+echo "</ul>";
 
-// Botón para visualizar la gráfica
-echo html_writer::link(new moodle_url('/blocks/ILSprogresive/graph.php', ['id' => $course->id]), 
-    get_string('viewgraph', 'block_ILSprogresive'), 
-    ['class' => 'btn btn-secondary']);
+echo "<a href='viewresources.php?courseid={$courseid}' class='btn btn-dark'>Regresar al Menú Anterior</a>";
 
 echo $OUTPUT->footer();
